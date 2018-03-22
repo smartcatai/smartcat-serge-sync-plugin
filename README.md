@@ -1,4 +1,4 @@
-# SergePlugin# Smartcat Plugin for Serge
+# Smartcat Plugin for Serge
 This plugin provides [Serge](https://serge.io/) integration with [Smartcat](https://smartcat.ai). 
 On [push-ts](https://serge.io/docs/help/serge-push-ts/) sync step, Serge will tell Smartcat to scan generated translation files and update its internal translation database so that the new content becomes available for translation online. Respectively, on [pull-ts](https://serge.io/docs/help/serge-pull-ts/) sync step, Serge will tell Smartcat to synchronize all the translations back into translation files.
 
@@ -25,3 +25,33 @@ Each configuration file in Serge represents a single translation project, and ma
 8.  To check whether the integration works the other way as well, add or change any segment in the Smartcat document, run `serge pull-ts my_project.serge`, and see if the changed files appear in your repository.
    
 Later you will run `serge sync` continuously against this configuration file, which will perform the two-way sync between Serge and Smartcat among other synchronization/localization steps. See [Localization Cycle](https://serge.io/docs/localization-cycle/) for more information.
+
+# Usage
+my_project.serge
+`sync
+{
+plugin                      smartCAT
+
+data
+{
+         # Unique project id in Smartcat
+         project_id              12345678-1234-1234-1234-123456789012
+
+         # Path to Smartcat-sync CLI utility that is used to sync
+         # local translation files with Smartcat project
+         manage_pl_path          C:\serge\bin\smartCAT-sync
+
+         # API token information from Smartcat setting
+         token_id                12345678-1234-1234-1234-123456789012
+         token                   1_1234567890123456789012345
+
+         # Absolute path to ts_files
+         po_path                 C:\serge\po
+}
+
+
+
+ # other sync parameters
+ # ...
+}
+`
