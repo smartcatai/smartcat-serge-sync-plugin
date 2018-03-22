@@ -28,7 +28,8 @@ Later you will run `serge sync` continuously against this configuration file, wh
 
 # Usage
 my_project.serge
-`sync
+```
+sync
 {
 plugin                      smartCAT
 
@@ -54,4 +55,4 @@ data
  # other sync parameters
  # ...
 }
-`
+```
