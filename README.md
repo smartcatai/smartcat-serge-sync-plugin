@@ -4,7 +4,7 @@ On [push-ts](https://serge.io/docs/help/serge-push-ts/) sync step, Serge will te
 
 Serge will convert your files to the [.PO](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html) format, which is natively supported by Smartcat.
 
-Communication between Serge and Smartcat is performed by means of the Smartcat-sync CLI utility, which can be downloaded [here](https://github.com/smartcatai/SergeSmartcatPlugin). Note that the Smartcat-sync utility must be installed on the same machine as Serge. 
+Communication between Serge and Smartcat is performed by means of the Smartcat-sync CLI utility. Note that the Smartcat-sync utility must be installed on the same machine as Serge. 
 
 Each configuration file in Serge represents a single translation project, and maps to a single specific project in Smartcat.
 
