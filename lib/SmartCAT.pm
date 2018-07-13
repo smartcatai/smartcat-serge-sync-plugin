@@ -4,6 +4,23 @@ use App::Cmd::Setup -app;
 use Class::Load;
 use Data::Dumper;
 use JSON qw/encode_json/;
+use Env;
+
+# Environment variable SMARTCAT_DEBUG_LEVEL used here to turn on debugging
+# Its value can be calculated with logical AND from DEBUG_* constants
+use constant {
+    # Debug only requests
+    DEBUG_REQUEST  => 1,
+    # Debug only response
+    DEBUG_RESPONSE => 2,
+    # Debug request and response only when errors
+    DEBUG_ONERROR  => 4,
+};
+
+my $debug_level = 0;
+if ( defined($ENV{SMARTCAT_DEBUG_LEVEL}) ) {
+    $debug_level = $ENV{SMARTCAT_DEBUG_LEVEL};
+};
 
 sub getAuthKey {
     my ($self, $token_id, $token) = @_;
@@ -31,12 +48,18 @@ sub getProjectDocuments {
     $request->header('Accept' => 'application/json');
     $request->header('Authorization' => 'Basic '.$key);
 
-    #print $request->as_string;
+    if ( $debug_level & DEBUG_REQUEST ) {
+        print __FILE__ . ' : ' . __LINE__ . "\n-----\n" . $request->as_string. "\n-----\n";
+    }
 
     my $response = $ua->request($request);
     if ($response->is_success) {
         return @{(JSON::XS::decode_json($response->content))->{documents}};
     } else {
+        if ( $debug_level & DEBUG_ONERROR ) {
+            print __FILE__ . ' : ' . __LINE__ . "\n-- request ---\n" . $request->as_string. "\n-----\n";
+            print "\n-- response ---\n" . Dumper($response) . "\n-----\n";
+        }
         die $response->status_line;
     }
 }
@@ -60,7 +83,9 @@ sub getFile {
     $request->header('Authorization' => 'Basic '.$key);
     $request->header('Content-Length' => 0);
 
-    #print $request->as_string;
+    if ( $debug_level & DEBUG_REQUEST ) {
+        print __FILE__ . ' : ' . __LINE__ . "\n-----\n" . $request->as_string. "\n-----\n";
+    }
 
     my $response = $ua->request($request);
     if ($response->is_success) {
@@ -71,16 +96,26 @@ sub getFile {
         $request2->header('Accept' => 'application/json');
         $request2->header('Authorization' => 'Basic '.$key);
 
-        #print $request2->as_string;
+        if ( $debug_level & DEBUG_REQUEST ) {
+            print __FILE__ . ' : ' . __LINE__ . "\n-----\n" . $request2->as_string. "\n-----\n";
+        }
 
         sleep 10;
         my $response2 = $ua->request($request2);
         if ($response2->is_success) {
             return $response2->decoded_content;
         } else {
+            if ( $debug_level & DEBUG_ONERROR ) {
+                print __FILE__ . ' : ' . __LINE__ . "\n-- request ---\n" . $request2->as_string. "\n-----\n";
+                print "\n-- response ---\n" . Dumper($response2) . "\n-----\n";
+            }
             die $response2->status_line;
         }
     } else {
+        if ( $debug_level & DEBUG_ONERROR ) {
+            print __FILE__ . ' : ' . __LINE__ . "\n-- request ---\n" . $request->as_string. "\n-----\n";
+            print "\n-- response ---\n" . Dumper($response) . "\n-----\n";
+        }
         die $response->status_line;
     }
 }
@@ -133,16 +168,23 @@ sub updateFile {
     my $json_header = HTTP::Headers->new('Content-Type' => 'application/json', 'Content-Disposition' => 'form-data; name="json_update_params"');
     my $json_message = HTTP::Message->new( $json_header, encode_json( { bilingualFileImportSetings => { confirmMode => "atLastStage" } } ) );
     $request->add_part($json_message);
-    #print "\n\n", '-' x 50, "\n\n", $request->as_string;
+    if ( $debug_level & DEBUG_REQUEST ) {
+        print __FILE__ . ' : ' . __LINE__ . "\n-----\n" . $request->as_string . "\n-----\n";
+    }
     my $response = $ua->request($request);
     sleep 2;
-    #print Dumper($response);
+    if ( $debug_level & DEBUG_RESPONSE ) {
+        print __FILE__ . ' : ' . __LINE__ . "\n-----\n" . Dumper($response) . "\n-----\n";
+    }
     if ($response->is_success) {
-        #print $response->content;
+        print $response->content;
     } else {
         print "\n\nFailed to update file: $path";
-        #print "\n\nRequest:\n".$request->as_string;
         print "\n\nResponse:\n".$response->as_string;
+        if ( $debug_level & DEBUG_ONERROR ) {
+            print __FILE__ . ' : ' . __LINE__ . "\n-- request ---\n" . $request->as_string. "\n-----\n";
+            print "\n-- response ---\n" . Dumper($response) . "\n-----\n";
+        }
     }
 }
 
@@ -209,15 +251,25 @@ sub uploadFile {
     my $json_message = HTTP::Message->new( $json_header, encode_json( [{ targetLanguages => [$target_language]  }] ) );
     $request->add_part($json_message);
 
+    if ( $debug_level & DEBUG_REQUEST ) {
+        print __FILE__ . ' : ' . __LINE__ . "\n-----\n" . $request->as_string . "\n-----\n";
+    }
+
     my $response = $ua->request($request);
-    #print Dumper($response);
+    if ( $debug_level & DEBUG_REQUEST ) {
+        print __FILE__ . ' : ' . __LINE__ . "\n-----\n" . Dumper($response) . "\n-----\n";
+    }
     if ($response->is_success) {
-        #print $response->content;
+        print $response->content;
     } else {
         print "\n\nFailed to upload file: $path";
-        #print "\n\nRequest:\n".$request->as_string;
         print "\n\nResponse:\n".$response->as_string;
+        if ( $debug_level & DEBUG_ONERROR ) {
+            print __FILE__ . ' : ' . __LINE__ . "\n-- request ---\n" . $request->as_string. "\n-----\n";
+            print "\n-- response ---\n" . Dumper($response) . "\n-----\n";
+        }
     }
 }
 
 1;
+
