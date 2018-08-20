@@ -1,0 +1,7 @@
+/Serge-Sync-Plugin-TranslationService-Smartcat-*
+/.build
+/_build*
+/Build
+MYMETA.*
+!META.json
+/.prove
