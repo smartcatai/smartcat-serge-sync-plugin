@@ -33,8 +33,8 @@ sub init {
                 complete_projects  => 'BOOLEAN',
                 complete_documents => 'BOOLEAN',
             },
-            filetype          => 'STRING',
-            file_per_language => 'BOOLEAN',
+            filetype           => 'STRING',
+            language_file_tree => 'BOOLEAN',
 
             #filename_template                  => 'STRING',
             #base_translation_language          => 'STRING',
@@ -83,8 +83,8 @@ sub validate_data {
           subst_macros( $self->{data}->{pull}->{complete_projects} );
     }
     $self->{data}->{log_file} = subst_macros( $self->{data}->{log_file} );
-    $self->{data}->{file_per_language} =
-      subst_macros( $self->{data}->{file_per_language} );
+    $self->{data}->{language_file_tree} =
+      subst_macros( $self->{data}->{language_file_tree} );
 
     $self->{data}->{debug} = subst_macros( $self->{data}->{debug} );
 
@@ -134,9 +134,10 @@ sub run_smartcat_cli {
       " --project-workdir=" . $self->{data}->{project_translation_files_path};
     $command .= " --log=" . $self->{data}->{log_file};
 
-    if ( $self->{data}->{file_per_language} ) {
-        $command .= " --file-per-language";
-
+    if ( $self->{data}->{language_file_tree} ) {
+        $command .= " --language-file-tree";
+    }
+    else {
         #$command .= " --filename_template".$self->{data}->{filename_template};
     }
 
@@ -302,9 +303,10 @@ Serge::Sync::Plugin::TranslationService::Smartcat is a syncronization plugin whi
 
                 /*
                     (BOOLEAN) [OPTIONAL]
-                    Default is YES
+                    Default is NO
                 */
-                file_per_language                    YES
+                language_file_tree                   NO
+
                 /*
                     (BOOLEAN) [OPTIONAL]
                     Default is NO
