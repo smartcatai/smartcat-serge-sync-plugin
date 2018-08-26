@@ -23,11 +23,10 @@ sub init {
 
     $self->merge_schema(
         {
-            project_translation_files_path => 'STRING',
-            project_id                     => 'STRING',
-            token_id                       => 'STRING',
-            token                          => 'STRING',
-            push                           => {
+            project_id => 'STRING',
+            token_id   => 'STRING',
+            token      => 'STRING',
+            push       => {
                 disassemble_algorithm_name => 'STRING',
             },
             pull => {
@@ -51,8 +50,21 @@ sub validate_data {
 
     $self->SUPER::validate_data;
 
+    my %job_ts_file_paths;
+    $job_ts_file_paths{ $_->{ts_file_path} }++
+      for @{ $self->{parent}{config}{data}{jobs} };
+    my @job_ts_file_paths = keys %job_ts_file_paths;
+    die sprintf( "More than one 'ts_file_path' found in the config file: %s" %
+          join( ', ', map { "'$_'" } @job_ts_file_paths ) )
+      if @job_ts_file_paths > 1;
+    my $ts_file_path = shift @job_ts_file_paths;
+    die sprintf(
+"'ts_file_path' which is set to '%s', doesn't match '%CULTURE%/%FILE%' pattern."
+          % $ts_file_path )
+      unless $ts_file_path =~ m/(%CULTURE%|%LOCALE%|%LANG%)\/%FILE%$/;
     $self->{data}->{project_translation_files_path} =
-      subst_macros( $self->{data}->{project_translation_files_path} );
+      dirname( dirname($ts_file_path) );
+
     $self->{data}->{project_id} = subst_macros( $self->{data}->{project_id} );
     $self->{data}->{token_id}   = subst_macros( $self->{data}->{token_id} );
     $self->{data}->{token}      = subst_macros( $self->{data}->{token} );
