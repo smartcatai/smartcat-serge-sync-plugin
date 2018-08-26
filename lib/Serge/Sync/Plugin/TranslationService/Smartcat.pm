@@ -50,6 +50,8 @@ sub validate_data {
 
     $self->SUPER::validate_data;
 
+    $self->{data}->{filetype} = subst_macros( $self->{data}->{filetype} );
+
     my %job_ts_file_paths;
     $job_ts_file_paths{ $_->{ts_file_path} }++
       for @{ $self->{parent}{config}{data}{jobs} };
@@ -61,7 +63,8 @@ sub validate_data {
     die sprintf(
 "'ts_file_path' which is set to '%s', doesn't match '%CULTURE%/%FILE%' pattern."
           % $ts_file_path )
-      unless $ts_file_path =~ m/(%CULTURE%|%LOCALE%|%LANG%)\/%FILE%$/;
+      unless $ts_file_path =~
+      m/(%CULTURE%|%LOCALE%|%LANG%)\/%FILE%$self->{data}->{filetype}/;
     $self->{data}->{project_translation_files_path} =
       dirname( dirname($ts_file_path) );
 
@@ -80,7 +83,6 @@ sub validate_data {
           subst_macros( $self->{data}->{pull}->{complete_projects} );
     }
     $self->{data}->{log_file} = subst_macros( $self->{data}->{log_file} );
-    $self->{data}->{filetype} = subst_macros( $self->{data}->{filetype} );
     $self->{data}->{file_per_language} =
       subst_macros( $self->{data}->{file_per_language} );
 
