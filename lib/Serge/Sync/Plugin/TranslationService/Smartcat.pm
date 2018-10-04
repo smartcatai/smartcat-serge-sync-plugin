@@ -66,6 +66,11 @@ sub validate_data {
     $self->{data}->{project_translation_files_path} =
       dirname( dirname($ts_file_path) );
 
+    die sprintf(
+"'ts_file_path' parent directory, which is set to '%s', does not point to a valid directory. Run 'localize' to generate translation files.",
+        $self->{data}->{project_translation_files_path} )
+      unless -d $self->{data}->{project_translation_files_path};
+
     $self->{data}->{project_id} = subst_macros( $self->{data}->{project_id} );
     $self->{data}->{token_id}   = subst_macros( $self->{data}->{token_id} );
     $self->{data}->{token}      = subst_macros( $self->{data}->{token} );
@@ -85,12 +90,6 @@ sub validate_data {
       subst_macros( $self->{data}->{language_file_tree} );
 
     $self->{data}->{debug} = subst_macros( $self->{data}->{debug} );
-
-    die "'project_translation_files_path' not defined"
-      unless defined $self->{data}->{project_translation_files_path};
-    die
-"'project_translation_files_path', which is set to '$self->{data}->{project_translation_files_path}', does not point to a valid directory.\n"
-      unless -d $self->{data}->{project_translation_files_path};
 
     die "'project_id' not defined" unless defined $self->{data}->{project_id};
 
