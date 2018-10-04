@@ -58,10 +58,11 @@ sub validate_data {
       if @job_ts_file_paths > 1;
     my $ts_file_path = shift @job_ts_file_paths;
     die sprintf(
-"'ts_file_path' which is set to '%s', doesn't match '%CULTURE%/%FILE%' pattern."
+"'ts_file_path' which is set to '%s', doesn't match '%LOCALE%/%FILE%' pattern."
           % $ts_file_path )
       unless $ts_file_path =~
-      m/(%CULTURE%|%LOCALE%|%LANG%)\/%FILE%$self->{data}->{filetype}/;
+      m/(%LOCALE%|%LANG%)\/%FILE%$self->{data}->{filetype}/;
+
     $self->{data}->{project_translation_files_path} =
       dirname( dirname($ts_file_path) );
 
