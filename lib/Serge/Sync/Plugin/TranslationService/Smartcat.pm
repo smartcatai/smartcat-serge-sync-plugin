@@ -36,9 +36,6 @@ sub init {
             filetype           => 'STRING',
             language_file_tree => 'BOOLEAN',
 
-            #filename_template                  => 'STRING',
-            #base_translation_language          => 'STRING',
-
             log_file => 'STRING',
             debug    => 'BOOLEAN',
         }
@@ -88,9 +85,6 @@ sub validate_data {
 
     $self->{data}->{debug} = subst_macros( $self->{data}->{debug} );
 
-#$self->{data}->{filename_template} = subst_macros($self->{data}->{filename_template});
-#$self->{data}->{base_translation_language} = subst_macros($self->{data}->{base_translation_language});
-
     die "'project_translation_files_path' not defined"
       unless defined $self->{data}->{project_translation_files_path};
     die
@@ -99,16 +93,12 @@ sub validate_data {
 
     die "'project_id' not defined" unless defined $self->{data}->{project_id};
 
-    #die "'token_id' not defined" unless defined $self->{data}->{token_id};
-    #die "'token' not defined" unless defined $self->{data}->{token};
     if ( $self->{data}->{log_file} ) {
         my $log_dir = rel2abs( dirname( $self->{data}->{log_file} ) );
         die
 "'log_file' parent directory which is set to '$log_dir', does not point to a valid directory.\n"
           unless -d $log_dir;
     }
-
-#die "'base_translation_language' not defined" unless defined $self->{data}->{base_translation_language};
 
     $self->{data}->{push} = {} unless defined $self->{data}->{push};
     $self->{data}->{push}->{disassemble_algorithm_name} = 'Serge.io PO'
@@ -136,9 +126,6 @@ sub run_smartcat_cli {
 
     if ( $self->{data}->{language_file_tree} ) {
         $command .= " --language-file-tree";
-    }
-    else {
-        #$command .= " --filename_template".$self->{data}->{filename_template};
     }
 
     $command .= " --debug" if $self->{data}->{debug};
