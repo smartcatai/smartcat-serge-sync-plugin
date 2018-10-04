@@ -289,7 +289,10 @@ Serge::Sync::Plugin::TranslationService::Smartcat is a syncronization plugin whi
                 filetype                             .po
 
                 /*
-                    (BOOLEAN) [OPTIONAL]
+                    (BOOLEAN) [OPTIONAL] If 'language_file_tree' is set
+                    to a true value (EXPERIMENTAL MODE), same '.po' files from
+                    direfferent language directories will be added to Smartcat as
+                    leafs of the only tree document
                     Default is NO
                 */
                 language_file_tree                   NO
