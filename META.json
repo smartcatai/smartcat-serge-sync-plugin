@@ -38,7 +38,7 @@
       },
       "runtime" : {
          "requires" : {
-            "Serge" : "0",
+            "Serge" : "1.3",
             "Smartcat::App" : "0",
             "perl" : "5.008005"
          }

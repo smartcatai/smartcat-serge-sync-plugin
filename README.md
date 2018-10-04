@@ -64,6 +64,7 @@ Serge::Sync::Plugin::TranslationService::Smartcat is a syncronization plugin whi
                         Default is NO
                     */
                     complete_projects                NO
+
                     /*
                         (BOOLEAN) [OPTIONAL] If 'complete_documents'
                         is set to a true value, the document will not be
@@ -73,6 +74,7 @@ Serge::Sync::Plugin::TranslationService::Smartcat is a syncronization plugin whi
                     */
                     complete_documents               NO
                 }
+
                 /*
                     (STRING) [OPTIONAL]
                     Default is read from `smartcat-cli` application config
@@ -84,11 +86,16 @@ Serge::Sync::Plugin::TranslationService::Smartcat is a syncronization plugin whi
                     Default is ".po"
                 */
                 filetype                             .po
+
                 /*
-                    (BOOLEAN) [OPTIONAL]
-                    Default is YES
+                    (BOOLEAN) [OPTIONAL] If 'language_file_tree' is set
+                    to a true value (EXPERIMENTAL MODE), same '.po' files from
+                    direfferent language directories will be added to Smartcat as
+                    leafs of the only tree document
+                    Default is NO
                 */
-                file_per_language                    YES
+                language_file_tree                   NO
+
                 /*
                     (BOOLEAN) [OPTIONAL]
                     Default is NO
