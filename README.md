@@ -1,6 +1,6 @@
 # NAME
 
-Serge::Sync::Plugin::TranslationService::Smartcat - [Smartcat translation server](http://smartcat.io/) .po synchronization plugin.
+Serge::Sync::Plugin::TranslationService::Smartcat - [Smartcat translation server](http://smartcat.ai/) .po synchronization plugin.
 
 # INSTALLATION
 
@@ -12,7 +12,7 @@ or
 
 # DESCRIPTION
 
-Serge::Sync::Plugin::TranslationService::Smartcat is a syncronization plugin which allows to build an integration between [Serge](https://serge.io/) (Free, Open Source Solution for Continous Localization) and [Smartcat](http://smartcat.io/).
+Serge::Sync::Plugin::TranslationService::Smartcat is a syncronization plugin which allows to build an integration between [Serge](https://serge.io/) (Free, Open Source Solution for Continous Localization) and [Smartcat](http://smartcat.ai/).
 
 # DESCRIPTION OF CONFIG PARAMETERS
 
