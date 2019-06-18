@@ -1,130 +1,154 @@
-# NAME
+# Serge + Smartcat
+[Smartcat](https://www.smartcat.ai/) drives the language industry to its full technological potential while making both customers and vendors happy in the process. By enjoying a continuous and streamlined multilingual delivery loop, Smartcat users are prepared for the new content economy. Below, we describe how to integrate and configure Serge and Smartcat to build an automated, continuous localization process.
 
-Serge::Sync::Plugin::TranslationService::Smartcat - [Smartcat translation server](http://smartcat.io/) .po synchronization plugin.
+## Configuring Serge to work with Smartcat
+Here are the steps you need to take to make Serge work with Smartcat.
 
-# INSTALLATION
+1. Create a Smartcat account.
+2. Create and set up a project in Smartcat.
+3. Install Serge.
+4. Set up the Smartcat plugin.
 
-    > cpanm Serge::Sync::Plugin::TranslationService::Smartcat
+### Setting up the Smartcat plugin
+```
+sudo cpanm Serge::Sync::Plugin::TranslationService::Smartcat
+```
 
-or
-
-    > cpanm https://github.com/ta2-1/smartcat-serge-sync-plugin/tarball/master
-
-# DESCRIPTION
-
-Serge::Sync::Plugin::TranslationService::Smartcat is a syncronization plugin which allows to build an integration between [Serge](https://serge.io/) (Free, Open Source Solution for Continous Localization) and [Smartcat](http://smartcat.io/).
-
-# DESCRIPTION OF CONFIG PARAMETERS
-
-    sync
+#### Adding the plugin
+Go to Serge configuration files > **myproject.serge.tmpl** and add the Smartcat plugin to the **sync > ts** section.
+```
+sync {
+ ts
     {
-        ts
+        plugin                      Smartcat
+        data
         {
-            plugin                      Smartcat
-
-            data
-            {
-                /*
-                    (STRING) Unique Smartcat project id
-                */
-                project_id              12345678-1234-1234-1234-123456789012
-
-                /*
-                    (STRING) [OPTIONAL] Account Id
-                    from https://smartcat.ai/ApiAccess/Credentials
-
-                    Default is read from `smartcat-cli` application config
-                */
-                token_id                12345678-1234-1234-1234-123456789012
-
-                /*
-                    (STRING) [OPTIONAL] API key
-                    from https://smartcat.ai/ApiAccess/Credentials
-
-                    Default is read from `smartcat-cli` application config
-                */
-                token                   1_1234567890123456789012345
-
-                # push-ts parameters
-                push {
-                    /*
-                        (STRING) [OPTIONAL]
-                        Default is Serge.io PO
-                    */
-                    disassemble_algorithm_name       Serge.io PO
-                }
-
-                # pull-ts parameters
-                pull {
-                    /*
-                        (BOOLEAN) [OPTIONAL] If 'complete_projects'
-                        is set to a true value, the whole project will not
-                        be pulled from Smartcat if its status doesn't
-                        equal 'complete'
-                        Default is NO
-                    */
-                    complete_projects                NO
-
-                    /*
-                        (BOOLEAN) [OPTIONAL] If 'complete_documents'
-                        is set to a true value, the document will not be
-                        pulled from Smartcat if its status doesn't
-                        equal 'complete'
-                        Default is NO
-                    */
-                    complete_documents               NO
-                }
-
-                /*
-                    (STRING) [OPTIONAL]
-                    Default is read from `smartcat-cli` application config
-                */
-                log_file                             /path/to/log/file
-
-                /*
-                    (STRING) [OPTIONAL]
-                    Default is ".po"
-                */
-                filetype                             .po
-
-                /*
-                    (BOOLEAN) [OPTIONAL] If 'language_file_tree' is set
-                    to a true value (EXPERIMENTAL MODE), same '.po' files from
-                    direfferent language directories will be added to Smartcat as
-                    leafs of the only tree document
-                    Default is NO
-                */
-                language_file_tree                   NO
-
-                /*
-                    (BOOLEAN) [OPTIONAL]
-                    Default is NO
-                */
-                debug                                YES
+            project_id             12345678-1234-1234-1234-1234567890123
+            token_id               12345678-1234-1234-1234-1234567890123
+            token                   1_qwertyuiopasdfghjklzxcvbn
+            push {
+                disassemble_algorithm_name       Serge.io PO
             }
+            pull {
+                complete_projects               NO
+                complete_documents              YES
+            }
+            log_file                            ./log/smartcat.log
         }
-
-        # other sync parameters
-        # ...
     }
+```
 
-# MINIMAL CONFIG SAMPLE
+#### Parameters:
+* **plugin** — plugin name. Must be “Smartcat”.
+* **project_id** — unique Smartcat [project ID](https://help.smartcat.ai/hc/en-us/articles/115002522912-What-is-Smartcat-project-ID).
+* **token, token_id** — [credentials](https://help.smartcat.ai/hc/en-us/articles/115002475012-Getting-Started-with-SmartCAT-API) used by Serge to access the Smartcat API. 
+* **disassemble_algorithm_name** — name of the algorithm to disassemble the Serge files. Must be “Serge.io PO”.
+* **complete_projects** — condition to pull new translations. Whether or not the plugin will pull translations from Smartcat only when all documents in the project are **Completed**. “No” by default. 
+* **complete_documents** — condition to pull new translations. Whether or not the plugin will pull translations from *each* **Completed** document in the Smartcat project. “Yes” by default.
 
-    sync
+#### Configuring Serge jobs
+Go to the **jobs** section in the **myproject.serge.tmpl** file and configure the **ts_file_path** parameter. It describes the location to generate .po files.
+```
+ts_file_path                ./po/%project_id%/%LANG%/%FILE%.po
+```
+Parameters:
+* project_id — unique [project ID](https://help.smartcat.ai/hc/en-us/articles/115002522912-What-is-Smartcat-project-ID) from Smartcat.
+
+Note that the %LOCALE% macro is used to generate locale-specific folders under the /po/project_id/ directory. The value for %LOCALE% is set up in the **destination_languages** parameter. It must correspond to the Smartcat project languages and language codes from the [list](https://help.smartcat.ai/hc/en-us/articles/360004895371-Supported-languages-and-language-codes).
+```
+destination_languages       ru zh-Hans ko de ja
+```
+Once you set up the **jobs** section in your configuration file, you can run the Serge localization pass once to see if the .po files are generated properly, and the folder and file structure matches the expectations.
+```
+serge localize myproject.local.serge
+```
+
+### Example of myproject.serge.tmpl
+A configured **myproject.serge.tmpl** is presented below. You can use it as a template for your integration.
+```
+sync {
+ ts
     {
-        ts
+        plugin                      Smartcat
+
+        data
         {
-            plugin                      Smartcat
+            project_id              %project_id%
+            token_id                %token_id%
+            token                   %token%
 
-            data
-            {
-                # token and token_id should be set via 'smartcat-cli' config file
-
-                project_id              12345678-1234-1234-1234-123456789012
+            push {
+                disassemble_algorithm_name       Serge.io PO
+            }
+            pull {
+                complete_projects                NO
+                complete_documents               YES
             }
         }
     }
 
-# AUTHOR
+    vcs {
+        plugin                      git
 
-Taras Semenenko <taras.semenenko@gmail.com>
+        data {
+            local_path              ./branches
+            add_unversioned         YES
+            name                    L10N Robot
+            email                   l10n-robot@example.com
+            remote_path {
+                master             git@gitlab.loc:common/myproject.git#master
+/* FBCGEN_BRANCH_REMOTES
+                $FBCGEN_DIR_PADDED  git@gitlab.loc:common/myproject.git#$FBCGEN_BRANCH
+*/
+            }
+
+        }
+    }
+}
+
+jobs {
+    :develop {
+        id                          job.master
+        name                        myproject
+        source_language             en
+        destination_languages       ru zh-Hans ko de ja
+        optimizations               NO
+        source_dir                  ./branches/master/client/src/translations
+        source_match                `en-US.js`
+        debug                       NO
+        parser {
+            plugin                  parse_js
+        }
+        leave_untranslated_blank    YES
+        db_source                   DBI:SQLite:dbname=./myproject.db3
+        db_namespace                myproject
+        ts_file_path                ./po/%project_id%/%LANG%/%FILE%.po
+        output_file_path            ./branches/master/client/src/translations/%CULTURE%.%EXT%
+        output_bom                  NO
+        output_lang_rewrite {
+               zh-Hans zh
+        }
+
+        callback_plugins {
+            :feature_branch {
+                plugin              feature_branch
+
+                data {
+                    master_job      job.base-translate
+                }
+            }
+        }
+    }
+
+/* FBCGEN_BRANCH_JOBS
+    :$FBCGEN_DIR {
+        @inherit                    .#jobs/:develop
+        id                          job.$FBCGEN_DIR
+                                      $FBCGEN_EXTRA_INCLUDE
+        source_path_prefix          $FBCGEN_BRANCH.
+        source_dir                  ./branches/$FBCGEN_DIR/client/src/translations/
+        output_file_path            ./branches/$FBCGEN_DIR/client/src/translations/%CULTURE%.%EXT%
+    }
+*/
+}
+```
