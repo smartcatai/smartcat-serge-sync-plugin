@@ -186,6 +186,7 @@ sub pull_ts {
     my $pull_settings = $self->{data}->{pull};
     $options .= ' --complete-documents' if $pull_settings->{complete_documents};
     $options .= ' --complete-projects'  if $pull_settings->{complete_projects};
+    $options .= ' --skip-missing';
 
     return $self->run_smartcat_cli( 'pull' . $options, $langs );
 }
@@ -199,6 +200,7 @@ sub push_ts {
       ' --disassemble-algorithm-name="'
       . $push_settings->{disassemble_algorithm_name} . '"'
       if $push_settings->{disassemble_algorithm_name};
+    $options .= ' --delete-not-existing';
 
     return $self->run_smartcat_cli( 'push' . $options, $langs );
 }
