@@ -29,10 +29,12 @@ sub init {
             project_translation_files_path => 'STRING',
             push       => {
                 disassemble_algorithm_name => 'STRING',
+                delete_not_existing        => 'BOOLEAN',
             },
             pull => {
                 complete_projects  => 'BOOLEAN',
                 complete_documents => 'BOOLEAN',
+                skip_missing       => 'BOOLEAN',
             },
             filetype           => 'STRING',
             language_file_tree => 'BOOLEAN',
@@ -114,12 +116,16 @@ sub validate_data {
     $self->{data}->{push} = {} unless defined $self->{data}->{push};
     $self->{data}->{push}->{disassemble_algorithm_name} = 'Serge.io PO'
       unless defined $self->{data}->{push}->{disassemble_algorithm_name};
+    $self->{data}->{push}->{delete_not_existing} = 1
+      unless defined $self->{data}->{push}->{delete_not_existing};
     $self->{data}->{filetype} = '.po' unless defined $self->{data}->{filetype};
     $self->{data}->{pull}     = {}    unless defined $self->{data}->{pull};
     $self->{data}->{pull}->{complete_projects} = 0
       unless $self->{data}->{pull}->{complete_projects};
     $self->{data}->{pull}->{complete_documents} = 0
       unless $self->{data}->{pull}->{complete_documents};
+    $self->{data}->{pull}->{skip_missing} = 1
+      unless $self->{data}->{pull}->{skip_missing};
 }
 
 sub run_smartcat_cli {
@@ -186,6 +192,7 @@ sub pull_ts {
     my $pull_settings = $self->{data}->{pull};
     $options .= ' --complete-documents' if $pull_settings->{complete_documents};
     $options .= ' --complete-projects'  if $pull_settings->{complete_projects};
+    $options .= ' --skip-missing'  if $pull_settings->{skip_missing};
 
     return $self->run_smartcat_cli( 'pull' . $options, $langs );
 }
@@ -199,6 +206,7 @@ sub push_ts {
       ' --disassemble-algorithm-name="'
       . $push_settings->{disassemble_algorithm_name} . '"'
       if $push_settings->{disassemble_algorithm_name};
+    $options .= ' --delete-not-existing'  if $push_settings->{delete_not_existing};
 
     return $self->run_smartcat_cli( 'push' . $options, $langs );
 }
