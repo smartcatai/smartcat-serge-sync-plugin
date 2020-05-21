@@ -23,6 +23,7 @@ sub init {
 
     $self->merge_schema(
         {
+            base_url   => 'STRING',
             project_id => 'STRING',
             token_id   => 'STRING',
             token      => 'STRING',
@@ -84,6 +85,7 @@ sub validate_data {
     }
 
 
+    $self->{data}->{base_url} = subst_macros( $self->{data}->{base_url} );
     $self->{data}->{project_id} = subst_macros( $self->{data}->{project_id} );
     $self->{data}->{token_id}   = subst_macros( $self->{data}->{token_id} );
     $self->{data}->{token}      = subst_macros( $self->{data}->{token} );
@@ -133,6 +135,8 @@ sub run_smartcat_cli {
 
     my $command = $action . ' --project-id=' . $self->{data}->{project_id};
 
+    $command .= " --base-url=" . $self->{data}->{base_url}
+      if defined $self->{data}->{base_url};
     $command .= " --token-id=" . $self->{data}->{token_id}
       if defined $self->{data}->{token_id};
     $command .= " --token=" . $self->{data}->{token}
@@ -248,6 +252,13 @@ Serge::Sync::Plugin::TranslationService::Smartcat is a syncronization plugin whi
                     (STRING) Unique Smartcat project id
                 */
                 project_id              12345678-1234-1234-1234-123456789012
+
+                /*
+                    (STRING) [OPTIONAL] Smartcat server URL
+
+                    Default is `https://smartcat.ai/`
+                */
+                base_url                https://us.smartcat.ai
 
                 /*
                     (STRING) [OPTIONAL] Account Id
