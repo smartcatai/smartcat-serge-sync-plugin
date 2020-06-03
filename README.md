@@ -1,5 +1,5 @@
 # Serge + Smartcat
-[Smartcat](https://www.smartcat.ai/) drives the language industry to its full technological potential while making both customers and vendors happy in the process. By enjoying a continuous and streamlined multilingual delivery loop, Smartcat users are prepared for the new content economy. Below, we describe how to integrate and configure Serge and Smartcat to build an automated, continuous localization process.
+[Smartcat](https://www.smartcat.ai/) is an all-in-one translation platform for language service providers and any companies who want to make localization a natural part of their content lifecycle. Below, we describe how to integrate and configure Smartcat to work with [the Serge utility](Serge.io) to build an automated, continuous localization process.
 
 ## Configuring Serge to work with Smartcat
 Here are the steps you need to take to make Serge work with Smartcat.
