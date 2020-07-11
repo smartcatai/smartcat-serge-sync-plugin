@@ -23,6 +23,7 @@ sync {
         plugin                      Smartcat
         data
         {
+            base_url                https://smartcat.ai
             project_id             12345678-1234-1234-1234-1234567890123
             token_id               12345678-1234-1234-1234-1234567890123
             token                   1_qwertyuiopasdfghjklzxcvbn
@@ -40,6 +41,7 @@ sync {
 
 #### Parameters:
 * **plugin** — plugin name. Must be “Smartcat”.
+* **base_url** — Smartcat API URL. Default: https://smartcat.ai (European server). See [API documentation](https://help.smartcat.ai/hc/en-us/articles/115002475012-Getting-Started-with-SmartCAT-API) for the list of available servers. You will know the server your account is on by just signing into your account and looking at the URL.
 * **project_id** — unique Smartcat [project ID](https://help.smartcat.ai/hc/en-us/articles/115002522912-What-is-Smartcat-project-ID).
 * **token, token_id** — [credentials](https://help.smartcat.ai/hc/en-us/articles/115002475012-Getting-Started-with-SmartCAT-API) used by Serge to access the Smartcat API. 
 * **disassemble_algorithm_name** — name of the algorithm to disassemble the Serge files. Must be “Serge.io PO”.
