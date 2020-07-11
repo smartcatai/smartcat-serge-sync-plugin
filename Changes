@@ -1,6 +1,8 @@
 Revision history for Serge-Sync-Plugin-TranslationService-Smartcat
 
 {{$NEXT}}
+        - Added `base_url` parameter to allow
+          overriding the base API URL.
 
 0.0.3  2019-01-15 00:24:34 UTC
 
