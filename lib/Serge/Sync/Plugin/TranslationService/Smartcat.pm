@@ -137,7 +137,8 @@ sub run_smartcat_cli {
       if defined $self->{data}->{token};
     $command .=
       " --project-workdir=" . $self->{data}->{project_translation_files_path};
-    $command .= " --log=" . $self->{data}->{log_file};
+    $command .= " --log=" . $self->{data}->{log_file}
+      if defined $self->{data}->{log_file};
 
     if ( $self->{data}->{language_file_tree} ) {
         $command .= " --language-file-tree";
