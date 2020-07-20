@@ -61,7 +61,7 @@
          "web" : "https://github.com/smartcatai/smartcat-serge-sync-plugin"
       }
    },
-   "version" : "0.0.4",
+   "version" : "0.0.5",
    "x_contributors" : [
       "Igor Afanasyev <afan@evernote.com>",
       "smartcatai <github@smartcat.pro>",

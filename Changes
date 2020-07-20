@@ -2,6 +2,9 @@ Revision history for Serge-Sync-Plugin-TranslationService-Smartcat
 
 {{$NEXT}}
 
+0.0.5  2020-07-20 22:50:44 UTC
+        - Set up dependency Smartcat::App => 0.0.3
+
 0.0.4  2020-07-20 20:04:38 UTC
         - Added `base_url` parameter to allow
           overriding the base API URL.
