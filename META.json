@@ -39,7 +39,7 @@
       "runtime" : {
          "requires" : {
             "Serge" : "v1.3.2",
-            "Smartcat::App" : "v0.0.2",
+            "Smartcat::App" : "v0.0.3",
             "perl" : "5.008005"
          }
       },
@@ -52,13 +52,13 @@
    "release_status" : "stable",
    "resources" : {
       "bugtracker" : {
-         "web" : "https://github.com/ta2-1/smartcat-serge-sync-plugin/issues"
+         "web" : "https://github.com/smartcatai/smartcat-serge-sync-plugin/issues"
       },
-      "homepage" : "https://github.com/ta2-1/smartcat-serge-sync-plugin",
+      "homepage" : "https://github.com/smartcatai/smartcat-serge-sync-plugin",
       "repository" : {
          "type" : "git",
-         "url" : "https://github.com/ta2-1/smartcat-serge-sync-plugin.git",
-         "web" : "https://github.com/ta2-1/smartcat-serge-sync-plugin"
+         "url" : "https://github.com/smartcatai/smartcat-serge-sync-plugin.git",
+         "web" : "https://github.com/smartcatai/smartcat-serge-sync-plugin"
       }
    },
    "version" : "0.0.4",
