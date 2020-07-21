@@ -16,7 +16,9 @@ Both this plugin and Serge itself are officially supported by Smartcat. We offer
     sudo cpan Serge::Sync::Plugin::TranslationService::Smartcat
     ```
 
-# Configuration
+# Next: [Getting Started](https://github.com/smartcatai/smartcat-serge-bootstrap)
+
+# Usage
 
 Use the template below for your Serge configuration file:
 
