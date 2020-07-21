@@ -9,7 +9,7 @@ Both this plugin and Serge itself are officially supported by Smartcat. We offer
 # Installation Instructions
 
 1. Create an account at [Smartcat](https://www.smartcat.ai/).
-2. Create and set up a blank project in Smartcat to synchronize your data with.
+2. Create a new project in Smartcat to synchronize your data with.
 3. [Install the latest version of Serge](https://serge.io/download/?/latest)
 4. Install this plugin by running:
     ```
