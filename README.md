@@ -1,3 +1,15 @@
+&nbsp;
+
+&nbsp;
+
+### This repository is deprecated. Smartcat now has a dedicated workflow, APIs and CLI to work with software localization projects. Check out our [Software Localization Projects in Smartcat](https://developers.smartcat.com/software-localization/) guide.
+
+&nbsp;
+
+&nbsp;
+
+---
+
 Smartcat plugin is now shipped with Serge. Please continue to [Serge + Smartcat Bootstrap Project](https://github.com/smartcatai/smartcat-serge-bootstrap) repo for the installation instructions and a Getting Started guide.
 
 The older version of the README can be found [here.](README_old.md)
